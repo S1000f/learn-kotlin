@@ -1,3 +1,4 @@
+import java.lang.Exception
 import java.util.*
 
 fun main() {
@@ -11,6 +12,16 @@ fun main() {
     stringTemplate(Collections.emptyList())
     stringTemplate(Collections.singletonList("Java"))
     stringTemplate(Arrays.asList("Java", "Kotlin"))
+
+    val person = Person("kdh", false)
+    println("is \"${person.name}\" married? : ${person.isMarried}")
+
+    println(Rectangle(3, 3).isSquare)
+
+    println(Color.BLUE.rgb())
+    println(getMnemonic(Color.GREEN))
+    println(getWarmth(Color.YELLOW))
+    println(mix(Color.YELLOW, Color.RED))
 }
 
 // 블록 함수
@@ -58,4 +69,48 @@ fun stringTemplate(args: MutableList<Any>) {
     // 중괄호 안에서 연산 가능
     println("Hello, ${if (args.size == 1) "Sir " + name else "everyone"} again!")
 
+}
+
+// 값 객체
+// public 이 기본이므로 생략 가능
+class Person(
+    // val 은 final 선언된 자바 필드와 유사
+    // Getter 를 자동생성
+    val name: String,
+    // var 는 Getter 와 Setter 모두 자동 생성
+    var isMarried: Boolean
+)
+
+class Rectangle(private val height: Int, private val width: Int) {
+    val isSquare: Boolean get() = height == width
+}
+
+enum class Color(val r: Int, val g: Int, val b: Int) {
+    RED(255, 0, 0),
+    ORANGE(255, 165, 0),
+    YELLOW(255, 255, 0),
+    GREEN(0, 255, 0),
+    BLUE(0, 0, 255);
+
+    fun rgb() = (r * 256 + g) * 256 + b
+}
+
+// when 역시 if 와 같은 표현식이므로 함수의 반환값으로 지정가능
+fun getMnemonic(color: Color) = when (color) {
+    Color.RED -> "Richard"
+    Color.ORANGE -> "Of"
+    Color.YELLOW -> "York"
+    Color.BLUE -> "Battle"
+    Color.GREEN -> "Gave"
+}
+
+fun getWarmth(color: Color) = when (color) {
+    Color.RED, Color.ORANGE, Color.YELLOW -> "warm"
+    else -> "cold"
+}
+
+fun mix(c1: Color, c2: Color) = when (setOf(c1, c2)) {
+    setOf(Color.RED, Color.YELLOW) -> Color.ORANGE
+    setOf(Color.YELLOW, Color.BLUE) -> Color.GREEN
+    else -> throw Exception("not matching")
 }

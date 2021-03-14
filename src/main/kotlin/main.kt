@@ -1,3 +1,6 @@
+import smartcast.Num
+import smartcast.Sum
+import smartcast.eval
 import java.lang.Exception
 import java.util.*
 
@@ -22,6 +25,8 @@ fun main() {
     println(getMnemonic(Color.GREEN))
     println(getWarmth(Color.YELLOW))
     println(mix(Color.YELLOW, Color.RED))
+
+    println(eval(Sum(Sum(Num(2), Num(4)), Num(3))))
 }
 
 // 블록 함수
@@ -82,7 +87,10 @@ class Person(
 )
 
 class Rectangle(private val height: Int, private val width: Int) {
-    val isSquare: Boolean get() = height == width
+    val sum
+        get() = height + width
+    val isSquare: Boolean
+        get() = height == width
 }
 
 enum class Color(val r: Int, val g: Int, val b: Int) {

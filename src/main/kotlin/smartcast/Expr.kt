@@ -1,0 +1,4 @@
+package smartcast
+
+interface Expr {
+}

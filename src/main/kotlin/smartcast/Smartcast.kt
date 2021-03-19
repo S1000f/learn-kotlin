@@ -18,7 +18,9 @@ fun eval(e: Expr): Int {
     }
 
     // 스마트캐스트를 사용
-    if (e is Sum) eval(e.right) + eval(e.left)
+    if (e is Sum) {
+       return eval(e.right) + eval(e.left)
+    }
 
     throw IllegalArgumentException("unknown expression")
 }

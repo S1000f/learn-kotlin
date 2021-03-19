@@ -16,6 +16,7 @@ fun main() {
     stringTemplate(Collections.singletonList("Java"))
     stringTemplate(Arrays.asList("Java", "Kotlin"))
 
+    // instant 생성 시 new 가 필요없음
     val person = Person("kdh", false)
     println("is \"${person.name}\" married? : ${person.isMarried}")
 
@@ -27,6 +28,37 @@ fun main() {
     println(mix(Color.YELLOW, Color.RED))
 
     println(eval(Sum(Sum(Num(2), Num(4)), Num(3))))
+
+    for (i in 1..100) {
+        print(fizzBuzz(i))
+    }
+
+    for (i in 100 downTo 1 step 2) {
+        print(fizzBuzz(i))
+    }
+    println()
+
+    val binaryReps = TreeMap<Char, String>()
+    for (c in 'A'..'F') {
+        val binary = Integer.toBinaryString(c.toInt())
+        binaryReps[c] = binary // java: binaryReps.put(c, binary);
+    }
+    for ((letter, binary) in binaryReps) {
+        println("${letter} = ${binary}")
+    }
+
+    val list = arrayListOf("10", "101", "203")
+    for ((index, element) in list.withIndex()) {
+        println("${index} : ${element}")
+    }
+
+    println(isLetter('f'))
+    println(isNotDigit('4'))
+
+    // in 으로 검사하기 - Comparable 를 구현한 클래스는 범위를 만들수있음. 하지만 루프는 돌 수 없음
+    println("Kotlin" in "Java".."Scala")
+    println("a" in setOf("a", "b", "c"))
+
 }
 
 // 블록 함수
@@ -121,4 +153,20 @@ fun mix(c1: Color, c2: Color) = when (setOf(c1, c2)) {
     setOf(Color.RED, Color.YELLOW) -> Color.ORANGE
     setOf(Color.YELLOW, Color.BLUE) -> Color.GREEN
     else -> throw Exception("not matching")
+}
+
+fun fizzBuzz(i: Int) = when {
+    i % 15 == 0 -> "FizzBuzz"
+    i % 3 == 0 -> "Fizz"
+    i % 5 == 0 -> "Buzz"
+    else -> "${i}"
+}
+
+fun isLetter(c: Char) = c in 'a'..'z' || c in 'A'..'Z'
+fun isNotDigit(c: Char) = c !in '0'..'9'
+
+fun recognize(c: Char) = when (c) {
+    in '0'..'9' -> "It is a digit"
+    in 'a'..'z', in 'A'..'Z' -> "It is a letter!"
+    else -> "I don't know..."
 }

@@ -1,3 +1,4 @@
+import chapter3.chapter3
 import smartcast.Num
 import smartcast.Sum
 import smartcast.eval
@@ -5,6 +6,11 @@ import java.lang.Exception
 import java.util.*
 
 fun main() {
+//    chapter2()
+    chapter3()
+}
+
+fun chapter2() {
     println("Hello World!")
     println(max(1, 2))
     println(max1(3, 6))
@@ -58,7 +64,6 @@ fun main() {
     // in 으로 검사하기 - Comparable 를 구현한 클래스는 범위를 만들수있음. 하지만 루프는 돌 수 없음
     println("Kotlin" in "Java".."Scala")
     println("a" in setOf("a", "b", "c"))
-
 }
 
 // 블록 함수

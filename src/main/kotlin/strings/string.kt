@@ -1,12 +1,11 @@
 @file:JvmName("StringUtils")
 // StringUtils 라는 이름의 정적 유틸리티 클래스를 자동 생성해준다
 
-package utils
+package strings
 
 // java: public static final String UNIX_LINE_SEPARATOR = "\n";
 const val UNIX_LINE_SEPARATOR = "\n"
 
-@JvmOverloads
 fun <T> joinToString(
     collection: Collection<T>,
     separator: String = ", ",

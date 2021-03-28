@@ -35,7 +35,36 @@ fun chapter3() {
     val builder = java.lang.StringBuilder("Kotlin?")
     builder.lastCharV3 = '!'
     println(builder.toString().lastChar())
+
+    println(sizeOf(1, 4, 5, 5))
+
+    val arrayList = ArrayList<Int>()
+    arrayList.add(3)
+    arrayList.add(4)
+    arrayList.add(1)
+
+    val list = listOf("args: ", arrayList)
+    println(list)
+
+    // 중위호출 사용
+    val map1 = mapOf(1 to "one", 2 to "two", 3 to "three")
+    println(map1)
+
+    val a = 3
+    // 중위호출 사용: to 는 제네릭타입의 확장함수이다
+    val infix = a to "three"
+    println(infix)
+
+    // Pair 는 코틀린 표준 라이브러리 함수이며, 두 원소의 쌍을 담은 자료구조이다
+    val plussed: Pair<Int, Int> = a infixPlus 4
+    // 구조 분해 선언: Pair 의 구조를 number1 과 number2 로 분해하여 선언하였다
+    val (number1, number2) = a infixPlus 4
+    println(plussed)
+    println("${number1} :: ${number2}")
 }
+
+// 구조분해 선언
+infix fun Int.infixPlus(that: Int) = Pair(this, this + that)
 
 // 모든 인자에 대해 오버로딩한 자바 메소드를 추가해주는 어노테이션
 @JvmOverloads
@@ -93,3 +122,7 @@ var java.lang.StringBuilder.lastCharV3: Char
     set(value: Char) {
         this.setCharAt(length - 1, value)
     }
+
+// 가변인자 함수: 파라미터명 앞에 vararg 키워드를 붙인다
+fun sizeOf(vararg values: Int): Int = values.size
+fun sizeOfList(value: List<Int>): Int = value.size

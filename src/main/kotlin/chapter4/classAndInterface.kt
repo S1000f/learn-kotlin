@@ -1,5 +1,7 @@
 package chapter4
 
+import java.io.Serializable
+
 fun chapter4() {
     val buttonClick = ButtonClick()
     buttonClick.click()
@@ -43,4 +45,67 @@ open class RichButton : Clickable {
 
     // 인터페이스 구현 메소드는 기본적으로 open 이다. final 을 붙이면 자식 클래스는 click() 를 오버라이딩 할 수 없다
     override fun click() = println("You can also override this")
+}
+
+abstract class Animated {
+    abstract fun animate()
+    fun animateTwice() {
+        println("It is moving...")
+    }
+    open fun stopAnimate() {
+        println("It stopped")
+    }
+}
+
+class Flower : Animated() {
+    override fun animate() {
+        TODO("Not yet implemented")
+    }
+
+    override fun stopAnimate() {
+        super.stopAnimate()
+    }
+}
+
+internal open class TalkativeButton : Focusable {
+    private fun yell() = println("Hey!")
+    protected fun whisper() = println("Let's talk...")
+    fun goOn() = println("Who")
+}
+
+internal fun TalkativeButton.giveSpeech() {
+    // yell 은 프라이빗 접근자이므로 접근 불가능
+//    yell()
+    // whisper 는 protected 접근자 이므로 접근 불가능
+//    whisper()
+    // goOn 은 기본접근자 (public) 이므로 접근 가능
+    goOn()
+}
+
+interface State: Serializable
+
+interface View {
+    fun getCurrentState(): State
+    fun restoreState(state: State) {}
+}
+
+class Button : View {
+    val memberFiled = "outer"
+
+    override fun getCurrentState(): State  = ButtonState()
+
+    override fun restoreState(state: State) {
+        super.restoreState(state)
+    }
+
+    // inner 변경자가 없는 경우 기본적으로 바깥 클래스인 Button 을 참조하지 않는다
+    // 따라서 바깥 클래스인 Button 이 Serializable 을 구현하지 않았더라도, 그 중첩클래스인 ButtonState 만 따로 직렬화가 가능하다
+    class ButtonState : State {}
+
+    // inner 변경자: 바깥 클래스인 Button 을 참조하는 중첩클래스를 만들어 준다
+    inner class Inner {
+        val memberFiled = "inner"
+        // inner 변경자가 있더라도 바깥 클래스인 Button 에 접근하려면 this@Button 형식으로 접근해야 함
+        fun getOuterReference(): String = this@Button.memberFiled
+    }
 }

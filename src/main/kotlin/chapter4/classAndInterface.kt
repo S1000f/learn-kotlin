@@ -18,6 +18,53 @@ fun chapter4() {
 
     val yeon = User4v4("Yeon", isSubscribed = true)
     println(yeon.isSubscribed)
+
+    val users = Users("Alice")
+    users.address = "19, Dungi-ro 18-Gil"
+    println(users.address)
+
+    val lengthCounter = LengthCounter()
+    lengthCounter.addWord("Hello, world!")
+    println(lengthCounter.counter)
+
+    val clientA = Client("aa", 45554)
+    println(clientA)
+
+}
+
+class Client(val name: String, val postalCode: Int) {
+    override fun toString(): String = "Client(name=${name}, postalCode=${postalCode})"
+
+    override fun equals(other: Any?): Boolean {
+        if (other == null || other !is Client) {
+            return false
+        }
+        return this.name == other.name && this.postalCode == other.postalCode
+    }
+
+    override fun hashCode(): Int = name.hashCode() * 31 + postalCode
+}
+
+// 게터와 세터 중 필요한 곳에만 접근제어자를 지정 할 수 있다
+class LengthCounter {
+    var counter: Int = 0
+        private set
+
+    fun addWord(word: String) {
+        counter += word.length
+    }
+}
+
+// 게터와 세터 내부에서 filed 예약어는 해당 게터,세터의 필드를 의미한다
+class Users(val name: String) {
+    var address: String = "unspecified"
+        set(value) {
+            println("""
+                address was changed for ${name}:
+                "${field}" -> "${value}".
+            """.trimIndent())
+            field = value
+        }
 }
 
 interface Clickable {
@@ -172,3 +219,34 @@ class MyButtons: View4 {
 
     constructor(ctx: Context, attr: String) : super(ctx, attr) {}
 }
+
+interface Member {
+    // 인터페이스의 추상 프로퍼티 선언
+    val nickname: String
+}
+
+class PrivateMember(override val nickname: String) : Member
+
+class SubscribingMember(val email: String) : Member {
+    override val nickname: String
+        get() = email.substringBefore('@')
+}
+
+class FacebookMember(val accountId: Int) : Member {
+    override val nickname = getFacebookName(accountId)
+}
+
+fun getFacebookName(accountId: Int): String {
+    return accountId.toString()
+}
+
+interface Members {
+    val email: String
+    val nickname: String
+        get() = email.substringBefore("@")
+}
+
+class PrivateMembers(override val email: String) : Members {
+    // 추상 프로퍼티 email 은 반드시 구현해야 하지만, 게터가 있는 nickname 은 반드시 구현할 필요가 없다
+}
+

@@ -1,7 +1,9 @@
 package chapter4
 
 import org.omg.CORBA.Context
+import java.io.File
 import java.io.Serializable
+import java.lang.IllegalArgumentException
 import javax.print.attribute.AttributeSet
 
 fun chapter4() {
@@ -30,7 +32,52 @@ fun chapter4() {
     val clientA = Client("aa", 45554)
     println(clientA)
 
+    val claraList = listOf(Clara("clara"), Clara("alara"))
+    println(claraList.sortedWith(Clara.CaseInsensitiveFileComparator))
+
 }
+
+// 코틀린은 자바의 static 키워드가 없다. 대신에 companion object 키워드를 함께 사용하여 정적 팩토리 메서드를 생성 할 수 있다
+class Companion private constructor(val nickname: String) {
+    companion object {
+        fun newSubscribingCompanion(email: String) =
+            Companion(email.substringBefore("@"))
+
+        fun newFacebookCompanion(accountId: Int) =
+            Companion(accountId.toString())
+    }
+}
+
+// 객체선언: object 키워드로 싱글턴 객체를 생성 할 수 있다. 이 객체는 다른 클래스 내부에 위치 시킬 수 도 있음
+data class Clara(val name: String) {
+    object CaseInsensitiveFileComparator : Comparator<Clara> {
+        override fun compare(o1: Clara?, o2: Clara?): Int {
+            if (o1 != null && o2 != null)
+                return o1.name.compareTo(o2.name)
+            else
+                throw IllegalArgumentException()
+        }
+    }
+}
+
+// by 키워드를 통해 decorator 객체를 쉽게 만들 수 있다
+class CountingSet<T>(
+    val innerSet: MutableCollection<T> = HashSet<T>()
+) : MutableCollection<T> by innerSet {
+
+    private var objectsAdded = 0
+
+    override fun add(element: T) : Boolean {
+        objectsAdded++
+        return innerSet.add(element)
+    }
+
+    override fun addAll(elements: Collection<T>): Boolean {
+        objectsAdded += elements.size
+        return innerSet.addAll(elements)
+    }
+}
+
 
 class Client(val name: String, val postalCode: Int) {
     override fun toString(): String = "Client(name=${name}, postalCode=${postalCode})"

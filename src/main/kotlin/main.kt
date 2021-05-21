@@ -1,5 +1,6 @@
 import chapter3.chapter3
 import chapter4.chapter4
+import chapter5.chapter5
 import smartcast.Num
 import smartcast.Sum
 import smartcast.eval
@@ -9,7 +10,8 @@ import java.util.*
 fun main() {
 //    chapter2()
 //    chapter3()
-    chapter4()
+//    chapter4()
+    chapter5()
 }
 
 fun chapter2() {

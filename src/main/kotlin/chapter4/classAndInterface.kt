@@ -35,6 +35,37 @@ fun chapter4() {
     val claraList = listOf(Clara("clara"), Clara("alara"))
     println(claraList.sortedWith(Clara.CaseInsensitiveFileComparator))
 
+    val worker1 = OfficeWorker.fromJSON("kim")
+    println(worker1.name)
+
+    val worker2 = Worker.fromJson("new worker")
+    println(worker2.name)
+
+    val worker3 = Worker.addQuestionMark("worker3")
+    println(worker3.name)
+
+}
+
+// 동반객체를 확장 할 수 있다
+fun Worker.Companion.addQuestionMark(jsonString: String) : Worker = Worker(this.fromJson(jsonString).name + "???")
+
+interface JSONFactory<T> {
+    fun fromJson(jsonString: String) : T
+}
+
+// 동반객체가 인터페이스를 상속하는 추상 익명 클래스가 될 수 있다
+class Worker(val name: String) {
+    companion object : JSONFactory<Worker> {
+        override fun fromJson(jsonString: String): Worker = Worker(jsonString.toUpperCase() + "!!!")
+    }
+}
+
+class OfficeWorker(val name: String) {
+    companion object Loader {
+        fun fromJSON(jsonString: String) : OfficeWorker {
+            return OfficeWorker(jsonString.toUpperCase())
+        }
+    }
 }
 
 // 코틀린은 자바의 static 키워드가 없다. 대신에 companion object 키워드를 함께 사용하여 정적 팩토리 메서드를 생성 할 수 있다
